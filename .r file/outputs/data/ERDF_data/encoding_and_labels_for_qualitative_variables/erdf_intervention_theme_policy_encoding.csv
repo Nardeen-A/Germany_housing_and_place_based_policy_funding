@@ -1,0 +1,68 @@
+"intervention","intervention_label","theme","theme_label","policy","policy_label","n"
+"1","Generic productive investment in small and medium–sized enterprises (‘SMEs’)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",7700
+"2","Research and innovation processes in large enterprises","TO01","Research and innovation","PO01","Smarter Europe",20
+"3","Productive investment in large enterprises linked to the low-carbon economy","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",2
+"4","Productive investment linked to the cooperation between large enterprises and SMEs for developing information and communication technology (‘ICT’) products and services, e-commerce and enhancing demand for ICT","TO01","Research and innovation","PO01","Smarter Europe",2
+"7","Natural gas","TO07","Network infrastructure in transport and energy","PO03","Connected Europe",2
+"9","Renewable energy: wind","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",1
+"10","Renewable energy: solar","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",21
+"11","Renewable energy: biomass","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",57
+"12","Other renewable energy (including hydroelectric, geothermal and marine energy) and renewable energy integration (including storage, power to gas and renewable hydrogen infrastructure)","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",224
+"13","Energy efficiency renovation of public infrastructure, demonstration projects and supporting measures","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",1752
+"15","Intelligent Energy Distribution Systems at medium and low voltage levels (including smart grids and ICT systems)","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",54
+"16","High efficiency co-generation and district heating","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",86
+"23","Environmental measures aimed at reducing and / or avoiding greenhouse gas emissions (including treatment and storage of methane gas and composting)","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",156
+"34","Other reconstructed or improved road (motorway, national, regional or local)","TO07","Network infrastructure in transport and energy","PO03","Connected Europe",9
+"35","Multimodal transport (TEN-T)","TO07","Network infrastructure in transport and energy","PO03","Connected Europe",1
+"36","Multimodal transport","TO07","Network infrastructure in transport and energy","PO03","Connected Europe",15
+"40","Other seaports","TO07","Network infrastructure in transport and energy","PO03","Connected Europe",1
+"43","Clean urban transport infrastructure and promotion (including equipment and rolling stock)","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",204
+"44","Intelligent transport systems (including the introduction of demand management, tolling systems, IT monitoring, control and information systems)","TO07","Network infrastructure in transport and energy","PO03","Connected Europe",30
+"46","ICT: High-speed broadband network (access/local loop; >/= 30 Mbps)","TO02","Information and communication technology","PO01","Smarter Europe",9
+"50","Education infrastructure for vocational education and training and adult learning","TO10","Educational and vocational training","PO04","Social Europe",200
+"51","Education infrastructure for school education (primary and general secondary education)","TO10","Educational and vocational training","PO04","Social Europe",90
+"52","Infrastructure for early childhood education and care","TO09","Social inclusion","PO04","Social Europe",54
+"53","Health infrastructure","TO09","Social inclusion","PO04","Social Europe",55
+"55","Other social infrastructure contributing to regional and local development","TO09","Social inclusion","PO04","Social Europe",612
+"56","Investment in infrastructure, capacities and equipment in SMEs directly linked to research and innovation activities","TO01","Research and innovation","PO01","Smarter Europe",1092
+"57","Investment in infrastructure, capacities and equipment in large companies directly linked to research and innovation activities","TO01","Research and innovation","PO01","Smarter Europe",139
+"58","Research and innovation infrastructure (public)","TO01","Research and innovation","PO01","Smarter Europe",938
+"59","Research and innovation infrastructure (private, including science parks)","TO01","Research and innovation","PO01","Smarter Europe",136
+"60","Research and innovation activities in public research centres and centres of competence including networking","TO01","Research and innovation","PO01","Smarter Europe",944
+"61","Research and innovation activities in private research centres including networking","TO01","Research and innovation","PO01","Smarter Europe",228
+"62","Technology transfer and university-enterprise cooperation primarily benefiting SMEs","TO01","Research and innovation","PO01","Smarter Europe",3671
+"63","Cluster support and business networks primarily benefiting SMEs","TO01","Research and innovation","PO01","Smarter Europe",254
+"64","Research and innovation processes in SMEs (including voucher schemes, process, design, service and social innovation)","TO01","Research and innovation","PO01","Smarter Europe",2745
+"65","Research and innovation infrastructure, processes, technology transfer and cooperation in enterprises focusing on the low carbon economy and on resilience to climate change","TO01","Research and innovation","PO01","Smarter Europe",619
+"66","Advanced support services for SMEs and groups of SMEs (including management, marketing and design services)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",5833
+"67","SME business development, support to entrepreneurship and incubation (including support to spin offs and spin outs)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",5768
+"68","Energy efficiency and demonstration projects in SMEs and supporting measures","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",2166
+"69","Support to environmentally-friendly production processes and resource efficiency in SMEs","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",431
+"70","Promotion of energy efficiency in large enterprises","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",188
+"71","Development and promotion of enterprises specialised in providing services contributing to the low carbon economy and to resilience to climate change (including support to such services)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",51
+"72","Business infrastructure for SMEs (including industrial parks and sites)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",77
+"73","Support to social enterprises (SMEs)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",10
+"74","Development and promotion of commercial tourism assets in SMEs","TO03","Competitiveness of SMEs","PO01","Smarter Europe",39
+"75","Development and promotion of commercial tourism services in or for SMEs","TO03","Competitiveness of SMEs","PO01","Smarter Europe",234
+"76","Development and promotion of cultural and creative assets in SMEs","TO03","Competitiveness of SMEs","PO01","Smarter Europe",1
+"77","Development and promotion of cultural and creative services in or for SMEs","TO03","Competitiveness of SMEs","PO01","Smarter Europe",87
+"79","Access to public sector information (including open data e-Culture, digital libraries, e-Content and e-Tourism)","TO02","Information and communication technology","PO01","Smarter Europe",8
+"81","ICT solutions addressing the healthy active ageing challenge and e-Health services and applications (including e-Care and ambient assisted living)","TO02","Information and communication technology","PO01","Smarter Europe",18
+"82","ICT Services and applications for SMEs (including e-Commerce, e-Business and networked business processes), living labs, web entrepreneurs and ICT start-ups)","TO03","Competitiveness of SMEs","PO01","Smarter Europe",2531
+"83","Air quality measures","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",41
+"85","Protection and enhancement of biodiversity, nature protection and green infrastructure","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",361
+"86","Protection, restoration and sustainable use of Natura 2000 sites","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",45
+"87","Adaptation to climate change measures and prevention and management of climate related risks e.g. erosion, fires, flooding, storms and drought, including awareness raising, civil protection and disaster management systems and infrastructures","TO05","Climate change adaptation and risk prevention","PO02","Greener, carbon-free Europe",522
+"88","Risk prevention and management of non-climate related natural risks (i.e. earthquakes) and risks linked to human activities (e.g. technological accidents), including awareness raising, civil protection and disaster management systems and infrastructures","TO05","Climate change adaptation and risk prevention","PO02","Greener, carbon-free Europe",22
+"89","Rehabilitation of industrial sites and contaminated land","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",235
+"90","Cycle tracks and footpaths","TO04","Low-carbon economy","PO02","Greener, carbon-free Europe",132
+"91","Development and promotion of the tourism potential of natural areas","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",89
+"92","Protection, development and promotion of public tourism assets","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",31
+"93","Development and promotion of public tourism services","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",78
+"94","Protection, development and promotion of public cultural and heritage assets","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",65
+"95","Development and promotion of public cultural and heritage services","TO06","Environment protection and resource efficiency","PO02","Greener, carbon-free Europe",6
+"97","Community-led local development initiatives in urban and rural areas","TO09","Social inclusion","PO04","Social Europe",65
+"121","Preparation, implementation, monitoring and inspection","TO12","Technical assistance",NA,NA,223
+"122","Evaluation and studies","TO12","Technical assistance",NA,NA,63
+"123","Information et communication","TO12","Technical assistance",NA,NA,46
+NA,NA,NA,NA,NA,NA,828
