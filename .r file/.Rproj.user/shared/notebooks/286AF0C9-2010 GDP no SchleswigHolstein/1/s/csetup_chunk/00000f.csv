@@ -1,0 +1,17 @@
+"0","# share1: (region-theme funding)/(region funding) -- adding up across themes by region should be 1; regress on (region's GDP/capita)
+# share2: (region-theme funding)/(theme funding) -- adding up across regions by theme should be 1; regress on (region's gdp/capita) * factor(theme)
+Germany_theme_shares_erdf <- Germany_erdf %>%
+  group_by(NUTS3_Code, Thematic_Objective_ID) %>%
+  summarise(funding_per_region_per_theme = sum(Total_Eligible_Expenditure_amount, na.rm = TRUE)) %>%
+  ungroup() %>%
+  group_by(NUTS3_Code) %>%
+  mutate(funding_per_region = sum(funding_per_region_per_theme, na.rm = TRUE)) %>%
+  mutate(share1 = funding_per_region_per_theme / funding_per_region) %>%
+  mutate(Share1_sum_check = sum(share1)) %>%
+  ungroup() %>%
+  group_by(Thematic_Objective_ID) %>%
+  mutate(funding_per_theme = sum(funding_per_region_per_theme, na.rm = TRUE)) %>%
+  mutate(share2 = funding_per_region_per_theme / funding_per_theme) %>%
+  mutate(Share2_sum_check = sum(share2))
+"
+"2","`summarise()` has grouped output by 'NUTS3_Code'. You can override using the `.groups` argument."

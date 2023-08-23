@@ -1,0 +1,18 @@
+# reading files
+proj.path <- getwd()
+Germany_erdf <- read.csv(file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'ERDF.csv'))
+
+# taking years
+Germany_erdf <- Germany_erdf %>%
+  filter(!grepl("^DEF", NUTS3_Code)) %>%
+  na.omit(Total_Eligible_Expenditure_amount) %>%
+  select(2, 3, 5)
+
+Germany_erdf$Operation_Start_Date <- dmy(Germany_erdf$Operation_Start_Date)
+Germany_erdf$Operation_End_Date <- dmy(Germany_erdf$Operation_End_Date)
+
+Germany_erdf$months_between <- interval(Germany_erdf$Operation_Start_Date, Germany_erdf$Operation_End_Date) %/% months(1)
+Germany_erdf$years_between <- Germany_erdf$months_between / 12
+
+weighted_mean <- weighted.mean(Germany_erdf$years_between, Germany_erdf$Total_Eligible_Expenditure_amount, na.rm = TRUE)
+

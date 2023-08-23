@@ -25,6 +25,7 @@ library(Hmisc)
 library(stargazer)
 library(sandwich)
 library(lmtest)
+library(lubridate)
 
 theme_set(theme_bw())
 theme_update(text = element_text(size=12.5))
