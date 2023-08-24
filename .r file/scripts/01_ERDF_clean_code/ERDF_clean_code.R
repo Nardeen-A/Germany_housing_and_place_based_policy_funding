@@ -12,4 +12,7 @@ Germany_aaw <- subset(Germany_aaw, grepl("^DE", NUTS3_Code))
 
 Germany_erdf <- subset(Germany_aaw, Fund_Code == "ERDF")
 
+Germany_erdf <- Germany_erdf %>%
+  filter(!grepl("^DEF", NUTS3_Code)) 
+
 write.csv(Germany_erdf, file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'ERDF.csv'), row.names = FALSE)

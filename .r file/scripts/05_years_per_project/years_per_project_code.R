@@ -4,7 +4,6 @@ Germany_erdf <- read.csv(file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'E
 
 # taking years
 Germany_erdf <- Germany_erdf %>%
-  filter(!grepl("^DEF", NUTS3_Code)) %>%
   na.omit(Total_Eligible_Expenditure_amount) %>%
   select(2, 3, 5)
 
