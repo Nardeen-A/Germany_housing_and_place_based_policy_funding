@@ -4,7 +4,6 @@ Germany_erdf <- read.csv(file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'E
 
 # taking years
 Germany_erdf <- Germany_erdf %>%
-  na.omit(Total_Eligible_Expenditure_amount) %>%
   select(2, 3, 5)
 
 Germany_erdf$Operation_Start_Date <- dmy(Germany_erdf$Operation_Start_Date)
@@ -15,3 +14,7 @@ Germany_erdf$years_between <- Germany_erdf$months_between / 12
 
 weighted_mean <- weighted.mean(Germany_erdf$years_between, Germany_erdf$Total_Eligible_Expenditure_amount, na.rm = TRUE)
 
+Germany_erdf$years_between <- ceiling(Germany_erdf$years_between)
+Germany_erdf$years_between[Germany_erdf$years_between == 0] <- Germany_erdf$years_between[Germany_erdf$years_between == 0] + 1
+
+write.csv(Germany_erdf, file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'years_per_project.csv'), row.names = TRUE)
