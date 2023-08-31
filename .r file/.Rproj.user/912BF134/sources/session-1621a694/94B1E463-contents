@@ -1,8 +1,8 @@
 # reading files
 proj.path <- getwd()
-Germany_erdf <- read.csv(file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'ERDF.csv'))
-years_per_project <- read.csv(file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'years_per_project.csv'))
-NUTS2 <- read.csv(file.path(proj.path, 'outputs', 'data', 'NUTS_names', 'NUTS2_names.csv'))
+Germany_erdf <- read.csv(file.path(proj.path, "outputs", "data", "ERDF_data", "ERDF.csv"))
+years_per_project <- read.csv(file.path(proj.path, "outputs", "data", "ERDF_data", "years_per_project.csv"))
+NUTS2 <- read.csv(file.path(proj.path, "outputs", "data", "NUTS_names", "NUTS2_names.csv"))
 GDP_per_capita <- read.csv(file.path(proj.path, "data", "GDP_per_capita_NUTS3", "OECD_GDP_per_capita_NUTS3.csv"))
 GDP_per_capita_Thuringia <- read.csv(file.path(proj.path, "data", "GDP_per_capita_NUTS3", "OECD_GDP_per_capita_Thuringia_NUTS3.csv"))
 
@@ -24,19 +24,61 @@ Germany_erdf$year <- as.numeric(Germany_erdf$year)
 Germany_erdf <- Germany_erdf %>%
   filter(policy != "") %>%
   rowwise() %>%
-  mutate(years = list(year + 0:(year_per_project - 1)),
-         allocated_funding = funding / year_per_project) %>%
+  mutate(
+    years = list(year + 0:(year_per_project - 1)),
+    allocated_funding = funding / year_per_project
+  ) %>%
   unnest(years) %>%
   select(-X, -funding, -year_per_project, -year) %>%
   ungroup()
 
-Germany_erdf <- Germany_erdf %>%
+Germany_erdf_by_year_region <- Germany_erdf %>%
+  select(3, 1, 4) %>%
+  filter(
+    years >= 2014,
+    years <= 2019
+  ) %>%
+  mutate(year = floor(years / 2) * 2) %>%
+  group_by(year, NUTS3) %>%
+  summarise(allocated_funding = sum(allocated_funding, na.rm = TRUE)) %>%
+  mutate(
+    year = as.character(year),
+    year = case_when(
+      year == "2014" ~ "2014-2015",
+      year == "2016" ~ "2016-2017",
+      year == "2018" ~ "2018-2019",
+      TRUE ~ year
+    )
+  )
+
+Germany_erdf_by_year_region_policy <- Germany_erdf %>%
   group_by(years, NUTS3, policy) %>%
   summarise(allocated_funding = sum(allocated_funding, na.rm = TRUE)) %>%
   arrange(years, NUTS3) %>%
   ungroup() %>%
-  filter(years >= 2014, 
-         years <= 2019)
+  filter(
+    years >= 2014,
+    years <= 2019
+  )
+
+Germany_erdf_by_year_region_policy_every2years <- Germany_erdf %>%
+  filter(
+    years >= 2014,
+    years <= 2019
+  ) %>%
+  mutate(year = floor(years / 2) * 2) %>%
+  group_by(year, NUTS3, policy) %>%
+  summarise(allocated_funding = sum(allocated_funding, na.rm = TRUE)) %>%
+  arrange(year, NUTS3) %>%
+  mutate(
+    year = as.character(year),
+    year = case_when(
+      year == "2014" ~ "2014-2015",
+      year == "2016" ~ "2016-2017",
+      year == "2018" ~ "2018-2019",
+      TRUE ~ year
+    )
+  )
 
 # GDP per capita
 GDP_per_capita <- rbind(GDP_per_capita, GDP_per_capita_Thuringia)
