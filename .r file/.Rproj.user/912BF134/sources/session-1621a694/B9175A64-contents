@@ -1,0 +1,373 @@
+#importing files ####
+proj.path <- getwd()
+load(file.path(proj.path, 'data', 'non_importers', 'main_square.rda'))
+
+# the value of 0 for NA/squared off portion of the data ####
+main_squared <- main_squared %>%
+  group_by(year, mmc, ind, type_trade)
+main_squared <- setnafill(main_squared, fill = 0)
+
+# type trade 1 and 3 ####
+TT_1_3_1986_1990 <- main_squared[main_squared$type_trade %in% c(1, 3), ]
+TT_1_3_1986_1990 <- TT_1_3_1986_1990[TT_1_3_1986_1990$year %in% c(1986: 1990), ] %>%
+  ungroup() %>%
+  select(2, 3, 5, 6, 7) %>%
+  group_by(mmc, ind) %>%
+  summarise(estab = sum(estab, na.rm = TRUE), wb = sum(wb, na.rm = TRUE), workers = sum(workers, na.rm = TRUE))
+
+# squared off check ####
+Check_1986_1990_mmc_ind_tally <- TT_1_3_1986_1990 %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally()
+
+Check_1986_1990_mmc_tally <- TT_1_3_1986_1990 %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally()
+
+# squared off grids ####
+join_1 <- expand.grid(mmc = unique(main_squared$mmc),
+                      ind = unique(main_squared$ind))
+join_2 <- expand.grid(mmc = unique(main_squared$mmc))
+join_3 <- expand.grid(ind = unique(main_squared$ind))
+# non importers ####
+TT_1_3_1986_1990_NI <- TT_1_3_1986_1990[TT_1_3_1986_1990$estab != 0, ]
+
+NI_mmc_ind_tally_1986_1990 <- TT_1_3_1986_1990_NI %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally() 
+
+NI_mmc_tally_1986_1990 <- TT_1_3_1986_1990_NI %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally()
+
+NI_mmc_ind_tally_1986_1990 <- left_join(join_1, NI_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+NI_mmc_tally_1986_1990 <- left_join(join_2, NI_mmc_tally_1986_1990, by = c( "mmc")) %>%
+  arrange(n)
+
+# missing non importers ####
+TT_1_3_1986_1990_missing_NI <- TT_1_3_1986_1990[TT_1_3_1986_1990$estab == 0, ]
+
+NI_missing_mmc_ind_tally_1986_1990 <- TT_1_3_1986_1990_missing_NI %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally()
+
+NI_missing_mmc_tally_1986_1990 <- TT_1_3_1986_1990_missing_NI %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally() 
+
+NI_missing_mmc_ind_tally_1986_1990 <- left_join(join_1, NI_missing_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+NI_missing_mmc_tally_1986_1990 <- left_join(join_2, NI_missing_mmc_tally_1986_1990, by = c( "mmc")) %>%
+  arrange(n)
+
+NI_missing_mmc_tally_1986_1990 <- setnafill(NI_missing_mmc_tally_1986_1990, fill = 0)
+NI_missing_mmc_ind_tally_1986_1990 <- setnafill(NI_missing_mmc_ind_tally_1986_1990, fill = 0)
+
+missing_non_importer_inds <- NI_missing_mmc_ind_tally_1986_1990 %>%
+  select(2, 3) %>%
+  group_by(ind) %>%
+  summarise(n = sum(n, na.rm = TRUE))
+
+missing_non_importer_mmc_distribution <- NI_missing_mmc_tally_1986_1990
+
+# non importers missing all five years ####
+missing_non_importers_all_years <- NI_missing_mmc_ind_tally_1986_1990[NI_missing_mmc_ind_tally_1986_1990$n == 1, ] 
+
+missing_non_importers_all_years_by_ind <- missing_non_importers_all_years %>%
+  select(1, 2) %>%
+  group_by(ind) %>%
+  tally() 
+
+missing_non_importers_all_years_by_mmc <- missing_non_importers_all_years %>%
+  select(1, 2) %>%
+  group_by(mmc) %>%
+  tally() 
+
+missing_non_importers_all_years_by_ind <- left_join(join_3, missing_non_importers_all_years_by_ind, by = c("ind"))
+missing_non_importers_all_years_by_mmc <- left_join(join_2, missing_non_importers_all_years_by_mmc, by = c("mmc")) 
+
+missing_non_importers_all_years_by_ind <- setnafill(missing_non_importers_all_years_by_ind, fill = 0) %>%
+  arrange(ind)
+missing_non_importers_all_years_by_mmc <- setnafill(missing_non_importers_all_years_by_mmc, fill = 0) %>%
+  arrange(n)
+
+# type trades 2 and 4 ####
+TT_2_4_1986_1990 <- main_squared[main_squared$type_trade %in% c(2, 4), ]
+TT_2_4_1986_1990 <- TT_2_4_1986_1990[TT_2_4_1986_1990$year %in% c(1986: 1990), ] %>%
+  ungroup() %>%
+  select(2, 3, 5, 6, 7) %>%
+  group_by(mmc, ind) %>%
+  summarise(estab = sum(estab, na.rm = TRUE), wb = sum(wb, na.rm = TRUE), workers = sum(workers, na.rm = TRUE))
+
+# importers ####
+TT_2_4_1986_1990_I <- TT_2_4_1986_1990[TT_2_4_1986_1990$estab != 0, ]
+
+I_mmc_ind_tally_1986_1990 <- TT_2_4_1986_1990_I %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally() 
+
+I_mmc_tally_1986_1990 <- TT_2_4_1986_1990_I %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally()
+
+# squaring off 
+join_1 <- expand.grid(mmc = unique(main_squared$mmc),
+                      ind = unique(main_squared$ind))
+join_2 <- expand.grid(mmc = unique(main_squared$mmc))
+
+I_mmc_ind_tally_1986_1990 <- left_join(join_1, I_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+I_mmc_tally_1986_1990 <- left_join(join_2, I_mmc_tally_1986_1990, by = c("mmc")) %>%
+  arrange(n)
+
+# missing importers ####
+TT_2_4_1986_1990_missing_I <- TT_2_4_1986_1990[TT_2_4_1986_1990$estab == 0, ]
+
+I_missing_mmc_ind_tally_1986_1990 <- TT_2_4_1986_1990_missing_I %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally()
+
+I_missing_mmc_tally_1986_1990 <- TT_2_4_1986_1990_missing_I %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally() 
+
+I_missing_mmc_ind_tally_1986_1990 <- left_join(join_1, I_missing_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+I_missing_mmc_tally_1986_1990 <- left_join(join_2, I_missing_mmc_tally_1986_1990, by = c("mmc")) %>%
+  arrange(n)
+
+I_missing_mmc_ind_tally_1986_1990 <- setnafill(I_missing_mmc_ind_tally_1986_1990, fill = 0)
+I_missing_mmc_tally_1986_1990 <- setnafill(I_missing_mmc_tally_1986_1990, fill = 0)
+
+missing_importer_inds <- I_missing_mmc_ind_tally_1986_1990 %>%
+  select(2, 3) %>%
+  group_by(ind) %>%
+  summarise(n = sum(n, na.rm = TRUE))
+
+missing_importer_mmc_distribution <- I_missing_mmc_tally_1986_1990
+
+# importers missing all five years ####
+missing_importers_all_years <- I_missing_mmc_ind_tally_1986_1990[I_missing_mmc_ind_tally_1986_1990$n == 1, ] 
+
+missing_importers_all_years_by_ind <- missing_importers_all_years %>%
+  select(1, 2) %>%
+  group_by(ind) %>%
+  tally() 
+
+missing_importers_all_years_by_mmc <- missing_importers_all_years %>%
+  select(1, 2) %>%
+  group_by(mmc) %>%
+  tally() 
+
+missing_importers_all_years_by_ind <- left_join(join_3, missing_importers_all_years_by_ind, by = c("ind"))
+missing_importers_all_years_by_mmc <- left_join(join_2, missing_importers_all_years_by_mmc, by = c("mmc")) 
+
+missing_importers_all_years_by_ind <- setnafill(missing_importers_all_years_by_ind, fill = 0) %>%
+  arrange(ind)
+missing_importers_all_years_by_mmc <- setnafill(missing_importers_all_years_by_mmc, fill = 0) %>%
+  arrange(n)
+
+# type trades 3 and 4 ####
+TT_3_4_1986_1990 <- main_squared[main_squared$type_trade %in% c(3, 4), ]
+TT_3_4_1986_1990 <- TT_3_4_1986_1990[TT_3_4_1986_1990$year %in% c(1986: 1990), ] %>%
+  ungroup() %>%
+  select(2, 3, 5, 6, 7) %>%
+  group_by(mmc, ind) %>%
+  summarise(estab = sum(estab, na.rm = TRUE), wb = sum(wb, na.rm = TRUE), workers = sum(workers, na.rm = TRUE))
+
+# removing non traded industries
+TT_3_4_1986_1990$traded_nontraded <- ifelse(TT_3_4_1986_1990$ind %in% c(0:14, 25), "traded", "non-traded")
+TT_3_4_1986_1990 <- TT_3_4_1986_1990[TT_3_4_1986_1990$traded_nontraded == "traded", ]
+
+# exporters ####
+TT_3_4_1986_1990_E <- TT_3_4_1986_1990[TT_3_4_1986_1990$estab != 0, ]
+
+E_mmc_ind_tally_1986_1990 <- TT_3_4_1986_1990_E %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally() 
+
+E_mmc_tally_1986_1990 <- TT_3_4_1986_1990_E %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally()
+
+# squaring off 
+join_1 <- expand.grid(mmc = unique(main_squared$mmc),
+                      ind = unique(main_squared$ind))
+join_2 <- expand.grid(mmc = unique(main_squared$mmc))
+
+E_mmc_ind_tally_1986_1990 <- left_join(join_1, E_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+E_mmc_tally_1986_1990 <- left_join(join_2, E_mmc_tally_1986_1990, by = c( "mmc")) %>%
+  arrange(n)
+
+# missing exporters ####
+TT_3_4_1986_1990_missing_E <- TT_3_4_1986_1990[TT_3_4_1986_1990$estab == 0, ]
+
+E_missing_mmc_ind_tally_1986_1990 <- TT_3_4_1986_1990_missing_E %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally()
+
+E_missing_mmc_tally_1986_1990 <- TT_3_4_1986_1990_missing_E %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally() 
+
+E_missing_mmc_ind_tally_1986_1990 <- left_join(join_1, E_missing_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+E_missing_mmc_tally_1986_1990 <- left_join(join_2, E_missing_mmc_tally_1986_1990, by = c( "mmc")) %>%
+  arrange(n)
+
+E_missing_mmc_tally_1986_1990 <- setnafill(E_missing_mmc_tally_1986_1990, fill = 0)
+E_missing_mmc_ind_tally_1986_1990 <- setnafill(E_missing_mmc_ind_tally_1986_1990, fill = 0)
+
+missing_exporter_inds <- E_missing_mmc_ind_tally_1986_1990 %>%
+  select(2, 3) %>%
+  group_by(ind) %>%
+  summarise(n = sum(n, na.rm = TRUE))
+
+missing_exporter_mmc_distribution <- E_missing_mmc_tally_1986_1990
+# exporters missing all five years ####
+missing_exporters_all_years <- E_missing_mmc_ind_tally_1986_1990[E_missing_mmc_ind_tally_1986_1990$n == 1, ] 
+
+missing_exporters_all_years_by_ind <- missing_exporters_all_years %>%
+  select(1, 2) %>%
+  group_by(ind) %>%
+  tally() 
+
+missing_exporters_all_years_by_mmc <- missing_exporters_all_years %>%
+  select(1, 2) %>%
+  group_by(mmc) %>%
+  tally() 
+
+missing_exporters_all_years_by_ind <- left_join(join_3, missing_exporters_all_years_by_ind, by = c("ind"))
+missing_exporters_all_years_by_mmc <- left_join(join_2, missing_exporters_all_years_by_mmc, by = c("mmc")) 
+
+missing_exporters_all_years_by_ind <- setnafill(missing_exporters_all_years_by_ind, fill = 0) %>%
+  arrange(ind)
+missing_exporters_all_years_by_mmc <- setnafill(missing_exporters_all_years_by_mmc, fill = 0) %>%
+  arrange(n)
+
+# all TT ####
+all_TT_1986_1990 <- main_squared[main_squared$year %in% c(1986: 1990), ] %>%
+  ungroup() %>%
+  select(2, 3, 5, 6, 7) %>%
+  group_by(mmc, ind) %>%
+  summarise(estab = sum(estab, na.rm = TRUE), wb = sum(wb, na.rm = TRUE), workers = sum(workers, na.rm = TRUE))
+
+# non-missing all TT ####
+all_TT_1986_1990_aaw <- all_TT_1986_1990[all_TT_1986_1990$estab != 0, ]
+
+all_TT_mmc_ind_tally_1986_1990 <- all_TT_1986_1990_aaw %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally() 
+
+all_TT_mmc_tally_1986_1990 <- all_TT_1986_1990_aaw %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally()
+
+# squaring off 
+join_1 <- expand.grid(mmc = unique(main_squared$mmc),
+                      ind = unique(main_squared$ind))
+join_2 <- expand.grid(mmc = unique(main_squared$mmc))
+
+all_TT_mmc_ind_tally_1986_1990 <- left_join(join_1, all_TT_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+all_TT_mmc_tally_1986_1990 <- left_join(join_2, all_TT_mmc_tally_1986_1990, by = c("mmc")) %>%
+  arrange(n)
+
+# missing at all TT
+all_TT_missing <- all_TT_1986_1990[all_TT_1986_1990$estab == 0, ]
+
+all_TT_missing_mmc_ind_tally_1986_1990 <- all_TT_missing %>%
+  ungroup() %>%
+  group_by(mmc, ind) %>% 
+  tally()
+
+all_TT_missing_mmc_tally_1986_1990 <- all_TT_missing %>%
+  ungroup() %>%
+  group_by(mmc) %>% 
+  tally() 
+
+all_TT_missing_mmc_ind_tally_1986_1990 <- left_join(join_1, all_TT_missing_mmc_ind_tally_1986_1990, by = c( "mmc", "ind")) %>%
+  arrange(n)
+all_TT_missing_mmc_tally_1986_1990 <- left_join(join_2, all_TT_missing_mmc_tally_1986_1990, by = c("mmc")) %>%
+  arrange(n)
+
+all_TT_missing_mmc_ind_tally_1986_1990 <- setnafill(all_TT_missing_mmc_ind_tally_1986_1990, fill = 0)
+all_TT_missing_mmc_tally_1986_1990 <- setnafill(all_TT_missing_mmc_tally_1986_1990, fill = 0)
+
+missing_all_TT_inds <- all_TT_missing_mmc_ind_tally_1986_1990 %>%
+  select(2, 3) %>%
+  group_by(ind) %>%
+  summarise(n = sum(n, na.rm = TRUE))
+
+missing_all_TT_mmc_distribution <- all_TT_missing_mmc_tally_1986_1990
+
+# all TT missing all five years ####
+missing_all_TT_all_years <- all_TT_missing_mmc_ind_tally_1986_1990[all_TT_missing_mmc_ind_tally_1986_1990$n == 1, ] 
+
+missing_all_TT_all_years_by_ind <- missing_all_TT_all_years %>%
+  select(1, 2) %>%
+  group_by(ind) %>%
+  tally() 
+
+missing_all_TT_all_years_by_mmc <- missing_all_TT_all_years %>%
+  select(1, 2) %>%
+  group_by(mmc) %>%
+  tally() 
+
+missing_all_TT_all_years_by_ind <- left_join(join_3, missing_all_TT_all_years_by_ind, by = c("ind"))
+missing_all_TT_all_years_by_mmc <- left_join(join_2, missing_all_TT_all_years_by_mmc, by = c("mmc")) 
+
+missing_all_TT_all_years_by_ind <- setnafill(missing_all_TT_all_years_by_ind, fill = 0) %>%
+  arrange(ind)
+missing_all_TT_all_years_by_mmc <- setnafill(missing_all_TT_all_years_by_mmc, fill = 0) %>%
+  arrange(n)
+# plots ####
+selected_colour <- viridis_pal(option = "C")(1)
+
+missing_non_importers <- ggplot(data = missing_non_importers_all_years_by_mmc, mapping = aes(x = n)) +
+  geom_histogram(position = "identity", binwidth = 1, colour = "black", fill = selected_colour, alpha = 0.8) +
+  labs(x = "Missing non-importers in all five years", y = "Count") + 
+  scale_x_continuous(breaks = seq(0, 15, 1))
+
+
+ggsave(file = 'missing_non_importers_count_histogram.svg', plot = missing_non_importers, path = file.path(proj.path, "output", "plots"), width = 3.5 * (16 / 9), height = 3.5)
+
+missing_importers <- ggplot(data = missing_importers_all_years_by_mmc, mapping = aes(x = n)) +
+  geom_histogram(position = "identity", binwidth = 1, colour = "black", fill = selected_colour, alpha = 0.8) +
+  labs(x = "Missing importers in all five years", y = "Count") + 
+  scale_x_continuous(breaks = seq(0, 18, 1))
+
+
+ggsave(file = 'missing_importers_count_histogram.svg', plot = missing_importers, path = file.path(proj.path, "output", "plots"), width = 3.5 * (16 / 9), height = 3.5)
+
+missing_exporters <- ggplot(data = missing_exporters_all_years_by_mmc, mapping = aes(x = n)) +
+  geom_histogram(position = "identity", binwidth = 1, colour = "black", fill = selected_colour, alpha = 0.8) +
+  labs(x = "Missing exporters in all five years", y = "Count") + 
+  scale_x_continuous(breaks = seq(0, 13, 1))
+
+ggsave(file = 'missing_exporters_count_histogram.svg', plot = missing_exporters, path = file.path(proj.path, "output", "plots"), width = 3.5 * (16 / 9), height = 3.5)
+
+missing_all_TT <- ggplot(data = missing_all_TT_all_years_by_mmc, mapping = aes(x = n)) +
+  geom_histogram(position = "identity", binwidth = 1, colour = "black", fill = selected_colour, alpha = 0.8) +
+  labs(x = "Missing all activity in all five years", y = "Count") + 
+  scale_x_continuous(breaks = seq(0, 15, 1))
+
+ggsave(file = 'missing_all_activity_count_histogram.svg', plot = missing_all_TT, path = file.path(proj.path, "output", "plots"), width = 3.5 * (16 / 9), height = 3.5)
