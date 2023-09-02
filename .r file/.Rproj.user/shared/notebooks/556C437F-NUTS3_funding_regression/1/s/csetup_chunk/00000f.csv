@@ -1,0 +1,6 @@
+"0","funding_and_gdp$State <- encoding$State[match(funding_and_gdp$NUTS1_states, encoding$NUTS1)]
+
+"
+"2","Error in exists(cacheKey, where = .rs.WorkingDataEnv, inherits = FALSE) : 
+  invalid first argument
+"

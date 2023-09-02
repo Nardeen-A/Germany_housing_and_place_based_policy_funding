@@ -54,9 +54,9 @@ Germany_erdf_by_year_region_policy_every2years <- Germany_erdf %>%
   mutate(
     year = as.character(year),
     year = case_when(
-      year == "2014" ~ "2014-2015",
-      year == "2016" ~ "2016-2017",
-      year == "2018" ~ "2018-2019",
+      year == "2014" ~ "years_2014_15",
+      year == "2016" ~ "years_2016_17",
+      year == "2018" ~ "years_2018_19",
       TRUE ~ year
     )
   )
@@ -73,9 +73,9 @@ Germany_erdf_by_year_region <- Germany_erdf %>%
   mutate(
     year = as.character(year),
     year = case_when(
-      year == "2014" ~ "2014-2015",
-      year == "2016" ~ "2016-2017",
-      year == "2018" ~ "2018-2019",
+      year == "2014" ~ "years_2014_15",
+      year == "2016" ~ "years_2016_17",
+      year == "2018" ~ "years_2018_19",
       TRUE ~ year
     )
   )
@@ -84,7 +84,7 @@ Germany_erdf_by_year_region <- Germany_erdf %>%
 Germany_erdf_by_year_region_policy_every2years$allocated_funding <- log(Germany_erdf_by_year_region_policy_every2years$allocated_funding)
 Germany_erdf_by_year_region$allocated_funding <- log(Germany_erdf_by_year_region$allocated_funding)
 
-# squaring off missing regions and policies
+# squaring off missing regions and policies and pivoting wider
 join_1 <- expand.grid(
   year = unique(Germany_erdf_by_year_region_policy_every2years$year),
   NUTS3 = unique(Germany_erdf$NUTS3),
@@ -97,6 +97,21 @@ join_2 <- expand.grid(
 
 Germany_erdf_by_year_region_policy_every2years <- left_join(join_1, Germany_erdf_by_year_region_policy_every2years, by = c("year", "NUTS3", "policy"))
 Germany_erdf_by_year_region <- left_join(join_2, Germany_erdf_by_year_region, by = c("year", "NUTS3"))
+
+# zeros for missing funding
+Germany_erdf_by_year_region_policy_every2years[is.na(Germany_erdf_by_year_region_policy_every2years)] <- 0
+Germany_erdf_by_year_region[is.na(Germany_erdf_by_year_region)] <- 0
+
+Germany_erdf_by_year_region_policy_every2years <- Germany_erdf_by_year_region_policy_every2years %>%
+  mutate(year = as.factor(year),
+         NUTS3 = as.factor(NUTS3),
+         policy = as.factor(policy)) %>%
+  pivot_wider(names_from = year, values_from = c(allocated_funding))
+
+Germany_erdf_by_year_region <- Germany_erdf_by_year_region %>%
+  mutate(year = as.factor(year),
+         NUTS3 = as.factor(NUTS3)) %>%
+  pivot_wider(names_from = year, values_from = c(allocated_funding))
 
 # GDP per capita
 GDP_per_capita <- rbind(GDP_per_capita, GDP_per_capita_Thuringia)
@@ -130,9 +145,7 @@ Germany_erdf_by_year_region$GDPpercap_2020 <- log(Germany_erdf_by_year_region$GD
 Germany_erdf_by_year_region_policy_every2years$GDPpercap_2018 <- log(Germany_erdf_by_year_region_policy_every2years$GDPpercap_2018)
 Germany_erdf_by_year_region$GDPpercap_2018 <- log(Germany_erdf_by_year_region$GDPpercap_2018)
 
-# zeros for missing funding
-
-Germany_erdf_by_year_region_policy_every2years[is.na(Germany_erdf_by_year_region_policy_every2years)] <- 0
-Germany_erdf_by_year_region[is.na(Germany_erdf_by_year_region)] <- 0
+# saving files
+write.csv(Germany_erdf_by_year_region, file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'funding_year_region_18_20_GDP.csv'), row.names = FALSE)
 
 
