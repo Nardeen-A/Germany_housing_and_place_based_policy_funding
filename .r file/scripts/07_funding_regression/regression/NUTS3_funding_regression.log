@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2023.7.27)  1 SEP 2023 21:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.6.29) (preloaded format=pdflatex 2023.7.27)  2 SEP 2023 22:18
 entering extended mode
 **./NUTS3_funding_regression.tex
 (NUTS3_funding_regression.tex
@@ -586,12 +586,12 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 [1
 
 {C:/Users/perfctblu/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2] [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 234.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 236.
 [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 234.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 236.
 (NUTS3_funding_regression.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 234.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 234.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 236.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 236.
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -619,7 +619,7 @@ onts/type1/public/lm/lmr9.pfb><C:/Users/perfctblu/AppData/Local/Programs/MiKTeX
 /fonts/type1/public/lm/lmri9.pfb><C:/Users/perfctblu/AppData/Local/Programs/MiK
 TeX/fonts/type1/public/lm/lmsy6.pfb><C:/Users/perfctblu/AppData/Local/Programs/
 MiKTeX/fonts/type1/public/lm/lmsy9.pfb>
-Output written on NUTS3_funding_regression.pdf (4 pages, 185369 bytes).
+Output written on NUTS3_funding_regression.pdf (4 pages, 185337 bytes).
 PDF statistics:
  95 PDF objects out of 1000 (max. 8388607)
  17 named destinations out of 1000 (max. 500000)
