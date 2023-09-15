@@ -1,0 +1,90 @@
+---
+title: "Funding Regression on Previous Years GDP per Capita"
+author: "Nardeen Abdulkareem"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(data.table)
+library(dplyr)
+library(ggnewscale)
+library(ggplot2)
+library(gridExtra)
+library(patchwork)
+library(pals)
+library(RColorBrewer)
+library(svglite)
+library(readxl)
+library(reshape)
+library(tidyr)
+library(tidyverse)
+library(viridis)
+library(viridisLite)
+library(rvest)
+library(rmarkdown)
+library(flexdashboard)
+library(haven)
+library(magrittr)
+library(reshape2)
+library(stargazer)
+library(labelled)
+library(Hmisc)
+library(stargazer)
+library(sandwich)
+library(lmtest)
+library(lubridate)
+
+theme_set(theme_bw())
+theme_update(text = element_text(size=12.5))
+
+# reading in file ####
+funding_and_gdp <- read.csv("E:\\School - work\\RA\\~ Germany_housing_and_place_based_policy_funding\\.r file\\outputs\\data\\ERDF_data\\funding_year_region_18_20_GDP.csv")
+encoding <- read.csv("E:\\School - work\\RA\\~ Germany_housing_and_place_based_policy_funding\\.r file\\outputs\\data\\NUTS_names\\NUTS1_names.csv")
+
+# state fixed effect
+funding_and_gdp <- funding_and_gdp %>%
+    mutate(NUTS1_states = substr(NUTS3, 1, 3))
+
+funding_and_gdp$State <- encoding$State[match(funding_and_gdp$NUTS1_states, encoding$NUTS1)]
+
+
+# regressions
+GDP2020_on_funding <- lm(GDPpercap_2020 ~ years_2018_19 + years_2016_17 + years_2014_15, data = funding_and_gdp)
+GDP2018_on_funding <- lm(GDPpercap_2018 ~ years_2016_17 + years_2014_15, data = funding_and_gdp)
+
+GDP2020_on_funding_sfe <- lm(GDPpercap_2020 ~ years_2018_19 + years_2016_17 + years_2014_15 + factor(State), data = funding_and_gdp)
+GDP2018_on_funding_sfe <- lm(GDPpercap_2018 ~ years_2016_17 + years_2014_15 + factor(State), data = funding_and_gdp)
+
+```
+
+## Log(GDP per Capita in 2020) ~ log(allocated funding from 2018 to 2019) + log(allocated funding from 2016 to 2017) + log(allocated funding from 2014 to 2015)
+```{r, results = 'asis', echo = FALSE}
+
+stargazer::stargazer(GDP2020_on_funding, header = FALSE, type = 'latex', model.names = FALSE, model.numbers = FALSE, single.row = TRUE, font.size = "small")
+
+```
+\newpage
+## Log(GDP per Capita in 2018) ~ log(allocated funding from 2016 to 2017) + log(allocated funding from 2014 to 2015)
+```{r, results = 'asis', echo = FALSE}
+
+stargazer::stargazer(GDP2018_on_funding, header = FALSE, type = 'latex', model.names = FALSE, model.numbers = FALSE, single.row = TRUE, font.size = "small")
+
+```
+\newpage
+## Log(GDP per Capita in 2020) ~ log(allocated funding from 2018 to 2019) + log(allocated funding from 2016 to 2017) + log(allocated funding from 2014 to 2015) + State fixed effect
+```{r, results = 'asis', echo = FALSE}
+
+stargazer::stargazer(GDP2020_on_funding_sfe, header = FALSE, type = 'latex', model.names = FALSE, model.numbers = FALSE, single.row = TRUE, font.size = "small")
+
+```
+\newpage
+## Log(GDP per Capita in 2018) ~ log(allocated funding from 2016 to 2017) + log(allocated funding from 2014 to 2015) + State fixed effect
+```{r, results = 'asis', echo = FALSE}
+
+stargazer::stargazer(GDP2018_on_funding_sfe, header = FALSE, type = 'latex', model.names = FALSE, model.numbers = FALSE, single.row = TRUE, font.size = "small")
+
+```
+

@@ -6,6 +6,9 @@ Germany_erdf <- read.csv(file.path(proj.path, 'outputs', 'data', 'ERDF_data', 'E
 Germany_erdf <- Germany_erdf %>%
   select(2, 3, 5)
 
+Germany_erdf <- Germany_erdf[nchar(Germany_erdf$Operation_End_Date) >= 1, ]
+Germany_erdf$Operation_End_Date <- ifelse(Germany_erdf$Operation_End_Date == "31/12/2919", "31/12/2019", Germany_erdf$Operation_End_Date)
+
 Germany_erdf$Operation_Start_Date <- dmy(Germany_erdf$Operation_Start_Date)
 Germany_erdf$Operation_End_Date <- dmy(Germany_erdf$Operation_End_Date)
 

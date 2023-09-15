@@ -1,0 +1,11 @@
+# reading 
+proj.path <- getwd()
+population_NUTS3 <- read.csv(file.path(proj.path, "data", "population_NUTS3", "OECD_population_NUTS3.csv"))
+
+# 2016 population 
+population_NUTS3_2016 <- population_NUTS3 %>%
+  select(3, 5, 8, 12, 19) %>%
+  filter(VAR == "T", Gender == "Total", Year == 2016)
+
+names(population_NUTS3_2016)[5] <- "population"
+names(population_NUTS3_2016)[1] <- "NUTS3"

@@ -23,13 +23,13 @@ OECD_GDP_per_state <- read.csv(file.path(proj.path, "data", "GDP_per_capita_NUTS
 
 population_NUTS3 <- read.csv(file.path(proj.path, "data", "population_NUTS3", "OECD_population_NUTS3.csv"))
 
-funding_per_gdp_erdf <- read.csv(file.path(proj.path, 'outputs', 'data', 'funding~GDP', 'No_interreg', 'Germany_erdf_funding_GDP_per_capita_region.csv'))
-funding_per_gdp_esf <- read.csv(file.path(proj.path, 'outputs', 'data', 'funding~GDP', 'No_interreg','Germany_esf_funding_GDP_per_capita_region.csv'))
+funding_per_gdp_erdf <- read.csv(file.path(proj.path, 'data', 'funding~GDP', 'No_interreg', 'Germany_erdf_funding_GDP_per_capita_region.csv'))
+funding_per_gdp_esf <- read.csv(file.path(proj.path, 'data', 'funding~GDP', 'No_interreg','Germany_esf_funding_GDP_per_capita_region.csv'))
 
-production_manuf_shares <- read.csv(file.path(proj.path, "outputs", "data", "IOT_Data","NUTS2_production_manuf_shares_for_map.csv"))
-labour_manuf_shares <- read.csv(file.path(proj.path, "outputs", "data", "IOT_Data","NUTS2_labour_manuf_shares_for_map.csv"))
+# production_manuf_shares <- read.csv(file.path(proj.path, "outputs", "data", "IOT_Data","NUTS2_production_manuf_shares_for_map.csv"))
+# labour_manuf_shares <- read.csv(file.path(proj.path, "outputs", "data", "IOT_Data","NUTS2_labour_manuf_shares_for_map.csv"))
+# NUTS3_manufacturing_shares <- read.csv(file.path(proj.path, "outputs", "data", "IOT_Data","NUTS3_manufacturing_shares.csv"))
 
-NUTS3_manufacturing_shares <- read.csv(file.path(proj.path, "outputs", "data", "IOT_Data","NUTS3_manufacturing_shares.csv"))
 # CONSTANTS #####
 # define projections
 # longlat
@@ -936,3 +936,134 @@ make_polygon_map_NUTS3_manufacturing_shares <- function() {
 }
 
 NUTS3_manufacturing_shares <- make_polygon_map_NUTS3_manufacturing_shares()
+
+# population ####
+population_2016 <- population_NUTS3 %>%
+  select(3, 5, 8, 12, 19) %>%
+  filter(VAR == "T", Gender == "Total", Year == 2016) %>%
+  select(1,5)
+
+population_2010 <- population_NUTS3 %>%
+  select(3, 5, 8, 12, 19) %>%
+  filter(VAR == "T", Gender == "Total", Year == 2010)%>%
+  select(1,5)
+
+names(population_2016)[1] <- "NUTS_ID"
+names(population_2010)[1] <- "NUTS_ID"
+names(population_2016)[2] <- "Population"
+names(population_2010)[2] <- "Population"
+
+df12 <- deu_nuts3 |>
+  left_join(population_2016, by = "NUTS_ID")
+
+df13 <- deu_nuts3 |>
+  left_join(population_2010, by = "NUTS_ID")
+# plotting population ####
+# 2016
+vmin <- min(df12$Population, na.rm = T)
+vmax <- max(df12$Population, na.rm = T)
+# bins
+brk <- classIntervals(df12$Population,
+                      n = 6,
+                      style = "pretty"
+)$brks |>
+  head(-1) |>
+  tail(-1) |>
+  append(vmax)
+# breaks
+breaks <- c(vmin, brk)
+
+make_polygon_map_population_2016 <- function() {
+  p10 <-
+    ggplot(df12) +
+    geom_sf(aes(fill = Population),
+            color = "grey20",
+            size = .1
+    ) +
+    scale_fill_gradientn(
+      name = "",
+      colours = viridis_pal(option = "G", alpha = 0.85)(7),
+      breaks = breaks,
+      labels = sprintf("%1.0f", breaks),
+      limits = c(vmin, vmax)
+    ) +
+    guides(fill = guide_legend(
+      direction = "horizontal",
+      keyheight = unit(1.5, units = "mm"),
+      keywidth = unit(15, units = "mm"),
+      title.position = "top",
+      title.hjust = 0.5,
+      label.hjust = .5,
+      nrow = 1,
+      byrow = T,
+      reverse = F,
+      label.position = "bottom"
+    )) +
+    theme_for_the_win() +
+    labs(
+      y = "",
+      subtitle = "",
+      x = "",
+      title = "",
+      caption = ""
+    )
+  return(p10)
+}
+
+population_plot_2016 <- make_polygon_map_population_2016()
+# 2010
+vmin <- min(df13$Population, na.rm = T)
+vmax <- max(df13$Population, na.rm = T)
+
+# bins
+brk <- classIntervals(df13$Population,
+                      n = 6,
+                      style = "pretty"
+)$brks |>
+  head(-1) |>
+  tail(-1) |>
+  append(vmax)
+
+
+# breaks
+breaks <- c(vmin, brk)
+
+make_polygon_map_population_2010 <- function() {
+  p10 <-
+    ggplot(df13) +
+    geom_sf(aes(fill = Population),
+            color = "grey20",
+            size = .1
+    ) +
+    scale_fill_gradientn(
+      name = "",
+      colours = viridis_pal(option = "G", alpha = 0.85)(7),
+      breaks = breaks,
+      labels = sprintf("%1.0f", breaks),
+      limits = c(vmin, vmax)
+    ) +
+    guides(fill = guide_legend(
+      direction = "horizontal",
+      keyheight = unit(1.5, units = "mm"),
+      keywidth = unit(15, units = "mm"),
+      title.position = "top",
+      title.hjust = 0.5,
+      label.hjust = .5,
+      nrow = 1,
+      byrow = T,
+      reverse = F,
+      label.position = "bottom"
+    )) +
+    theme_for_the_win() +
+    labs(
+      y = "",
+      subtitle = "",
+      x = "",
+      title = "",
+      caption = ""
+    )
+  return(p10)
+}
+
+population_plot_2010 <- make_polygon_map_population_2010()
+
